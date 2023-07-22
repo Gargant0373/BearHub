@@ -1,0 +1,13 @@
+{"timestamp":"2023-07-21T14:31:00.321Z","personName":"Dani","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:31:00.658Z","personName":"Dani","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:41:04.128Z","personName":"Dani","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:53:17.522Z","personName":"Alex","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:53:23.358Z","personName":"Alex","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:53:23.583Z","personName":"Alex","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:53:35.329Z","personName":"Alex","action":"ADD","type":"big"}
+{"timestamp":"2023-07-21T14:53:35.722Z","personName":"Alex","action":"ADD","type":"big"}
+{"timestamp":"2023-07-21T14:53:36.017Z","personName":"Alex","action":"ADD","type":"big"}
+{"timestamp":"2023-07-21T14:53:36.184Z","personName":"Alex","action":"ADD","type":"big"}
+{"timestamp":"2023-07-21T14:54:01.426Z","personName":"Dani","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:54:01.581Z","personName":"Dani","action":"ADD","type":"small"}
+{"timestamp":"2023-07-21T14:54:18.800Z","personName":"Alex","action":"PAY","paidAmount":43}
