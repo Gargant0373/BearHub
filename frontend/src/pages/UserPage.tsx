@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Logs from '../components/Logs';
 import { PasswordField } from '../components/Password';
 
-function UserPage(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEER_PRICE: number }) {
+function UserPage(props: { SERVER_PATH: string }) {
     const location = useLocation();
     const navigate = useNavigate();
 

@@ -9,9 +9,7 @@ import Beers from './pages/Beers';
 import UserPage from './pages/UserPage';
 
 const props = {
-  SERVER_PATH: 'https://thegrill.gargant.dev',
-  SMALL_BEER_PRICE: 5,
-  LARGE_BEER_PRICE: 8,
+  SERVER_PATH: 'https://thegrill.gargant.dev'
 }
 
 const router = createBrowserRouter([

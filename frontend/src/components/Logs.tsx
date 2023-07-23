@@ -18,7 +18,7 @@ interface Log {
   paidAmount?: number;
 }
 
-function Logs(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEER_PRICE: number }) {
+function Logs(props: { SERVER_PATH: string }) {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [logs, setLogs] = useState<Log[]>([]);
   const [page, setPage] = useState(0);

@@ -16,7 +16,7 @@ const port = 4999;
 let beerData = {};
 
 const SMALL_BEER_PRICE = 5;
-const BIG_BEER_PRICE = 7;
+const BIG_BEER_PRICE = 8;
 
 // Load existing data from the JSON file
 fs.readFile(dataFilePath, 'utf8', (err, data) => {

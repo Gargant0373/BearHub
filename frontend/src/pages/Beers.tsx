@@ -16,7 +16,7 @@ interface PersonData {
 const SMALL_BEER_SIZE = 0.33;
 const BIG_BEER_SIZE = 0.5;
 
-function Beers(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEER_PRICE: number }) {
+function Beers(props: { SERVER_PATH: string }) {
   const location = useLocation();
   const navigate = useNavigate();
 
