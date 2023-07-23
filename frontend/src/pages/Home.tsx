@@ -2,8 +2,6 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// use state to store how many beers each person drank
-
 function Home() {
     const navigate = useNavigate();
     const [name, setName] = useState('');
@@ -14,6 +12,7 @@ function Home() {
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
+
         navigate('/beers', { state: { name } });
     };
 
@@ -21,7 +20,7 @@ function Home() {
         <form onSubmit={handleSubmit}>
             <Grid container spacing={2} justifyContent="center" alignItems="center">
                 <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-                    <img src="../../public/bear.png" height="150px" width="auto" alt="Bear" />
+                    <img src="/bear.png" height="150px" width="auto" alt="Bear" />
                 </Grid>
                 <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
                     <Typography variant="h4">Enter your name.</Typography>
@@ -36,7 +35,7 @@ function Home() {
                     />
                 </Grid>
                 <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-                    <Button type="submit" variant="contained">
+                    <Button type="submit" variant="contained" onClick={handleSubmit}>
                         Get your bear!
                     </Button>
                 </Grid>

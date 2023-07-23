@@ -76,11 +76,24 @@ app.use((req, res, next) => {
   }
 });
 
-// Get the password for a specific person
-app.get('/api/people/:personName/password', (req, res) => {
+// Validate the password for a specific person
+app.get('/api/people/:personName/validatePassword', (req, res) => {
   const { personName } = req.params;
+  const { password } = req.query;
+
+  if (!password) {
+    res.status(400).json({ error: 'Password not provided' });
+    return;
+  }
+
   if (beerData[personName]) {
-    res.status(200).json({ password: beerData[personName].password });
+    const savedPassword = beerData[personName].password;
+
+    if (password === savedPassword) {
+      res.status(200).json({ valid: true, message: 'Password is correct' });
+    } else {
+      res.status(200).json({ valid: false, message: 'Password is incorrect' });
+    }
   } else {
     res.status(404).json({ error: 'Person not found' });
   }

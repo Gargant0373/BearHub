@@ -3,24 +3,25 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import TodayGraph from '../components/TodayGraph';
+import { Login } from '../components/Password';
 
 interface PersonData {
   name: string; // this is the ID
   smallBeers: number;
   bigBeers: number;
   toPay: number;
-  passowrd?: string;
+  password?: string;
 }
 
 const SMALL_BEER_SIZE = 0.33;
 const BIG_BEER_SIZE = 0.5;
-
 
 function Beers(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEER_PRICE: number }) {
   const location = useLocation();
   const navigate = useNavigate();
 
   const [peopleData, setPeopleData] = useState<PersonData[]>([]);
+  const [logged, setLogged] = useState<boolean>(false);
 
   if (!location.state) {
     navigate("/");
@@ -70,6 +71,14 @@ function Beers(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEE
     }
   };
 
+  {
+    if (peopleData.find((person) => person.name === name)?.password != null && !logged) {
+      return (
+        <Login SERVER_PATH={props.SERVER_PATH} setLogged={setLogged} />
+      )
+    }
+  }
+
   return (
     <>
       <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -108,7 +117,7 @@ function Beers(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEE
                 },
                 height: "auto"
               }}>
-                <img src="../public/small.png" width="100%" height="auto" />
+                <img src="/small.png" width="100%" height="auto" />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -129,7 +138,7 @@ function Beers(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEE
                 },
                 height: "auto"
               }}>
-                <img src="../public/large.png" width="100%" height="auto" />
+                <img src="/large.png" width="100%" height="auto" />
               </Box>
             </Grid>
             <Grid item xs={12}>
@@ -141,18 +150,6 @@ function Beers(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEE
               </Button>
             </Grid>
           </Grid>
-          {/* <Grid item xs={0} md={4} />
-          <Grid item xs={12} md={2} display="flex" justifyContent="center" alignItems="center">
-            <Button variant="contained" onClick={() => addBeer(name, 'small')}>
-              Add Small
-            </Button>
-          </Grid>
-          <Grid item xs={12} md={2} display="flex" justifyContent="center" alignItems="center">
-            <Button variant="contained" onClick={() => addBeer(name, 'big')}>
-              Add Big
-            </Button>
-          </Grid>
-          <Grid item xs={0} md={4} /> */}
         </Grid>
         <BeerData name={name} peopleData={peopleData} paidPerson={paidPerson} deletePerson={deletePerson} />
         <Grid item xs={12} md={6}>

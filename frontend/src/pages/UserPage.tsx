@@ -1,8 +1,9 @@
-import { Button, Divider, Grid, TextField, Typography, useMediaQuery, useTheme } from '@mui/material';
+import { Button, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logs from '../components/Logs';
+import { PasswordField } from '../components/Password';
 
-function UserPage(props: {SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEER_PRICE: number}) {
+function UserPage(props: { SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_BEER_PRICE: number }) {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -34,27 +35,7 @@ function UserPage(props: {SERVER_PATH: string, SMALL_BEER_PRICE: number, LARGE_B
             <Grid item xs={12}>
                 <Divider />
             </Grid>
-            <Grid container item xs={12} md={6}>
-                <Grid item xs={2} md={3} />
-                <Grid item xs={8} md={6}>
-                    <Grid item xs={12}>
-                        <Grid item xs={12}>
-                            <Typography variant="h6">Change Password</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="Set Password"
-                                variant="outlined"
-                                fullWidth
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid marginTop="10px" item xs={12}>
-                        <Button type="submit" variant="contained">Set Password</Button>
-                    </Grid>
-                </Grid>
-                <Grid item xs={2} md={3} />
-            </Grid>
+            <PasswordField SERVER_PATH={props.SERVER_PATH} />
 
             {isMatch && <Grid item xs={12}>
                 <Divider />
