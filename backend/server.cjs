@@ -42,10 +42,10 @@ app.use((req, res, next) => {
   if (req.url.includes('/beers')) {
     logObject.action = 'ADD';
     logObject.type = type;
-    logObject.personName = req.url.split('/')[3];
+    logObject.personName = req.url.split('/')[3].trim();
   } else if (req.url.includes('/pay')) {
     logObject.action = 'PAY';
-    logObject.personName = req.url.split('/')[3];
+    logObject.personName = req.url.split('/')[3].trim();
     logObject.paidAmount = beerData[logObject.personName]?.toPay;
   } else {
     logObject.action = 'UNKNOWN';
@@ -101,7 +101,7 @@ app.get('/api/people/:personName/validatePassword', (req, res) => {
 
 // Update the password for a specific person
 app.post('/api/people/:personName/password', (req, res) => {
-  const { personName } = req.params;
+  const { personName } = req.params.trim();
   const { password } = req.body;
   if (beerData[personName]) {
     beerData[personName].password = password;
