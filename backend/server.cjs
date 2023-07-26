@@ -3,6 +3,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto-js');
 
 const app = express();
 app.use(cors());
@@ -77,19 +78,23 @@ app.use((req, res, next) => {
 });
 
 // Validate the password for a specific person
-app.get('/api/people/:personName/validatePassword', (req, res) => {
-  const { personName } = req.params;
+app.get('/api/people/:name/validatePassword', (req, res) => {
+  const { name } = req.params;
   const { password } = req.query;
-
+  
   if (!password) {
     res.status(400).json({ error: 'Password not provided' });
     return;
   }
 
-  if (beerData[personName]) {
-    const savedPassword = beerData[personName].password;
+  let hashedPassword = crypto.SHA256(password).toString(crypto.enc.Base64);
+  
+  if (beerData[name]) {
+    const savedPassword = beerData[name].password;
 
-    if (password === savedPassword) {
+    console.log(hashedPassword, savedPassword);
+
+    if (hashedPassword == savedPassword) {
       res.status(200).json({ valid: true, message: 'Password is correct' });
     } else {
       res.status(200).json({ valid: false, message: 'Password is incorrect' });
@@ -100,23 +105,26 @@ app.get('/api/people/:personName/validatePassword', (req, res) => {
 });
 
 // Update the password for a specific person
-app.post('/api/people/:personName/password', (req, res) => {
-  const { personName } = req.params.trim();
+app.post('/api/people/:name/password', (req, res) => {
+  const { name } = req.params;
   const { password } = req.body;
-  if (beerData[personName]) {
-    beerData[personName].password = password;
+
+  console.log(password);
+
+  if (beerData[name]) {
+    beerData[name].password = crypto.SHA256(password).toString(crypto.enc.Base64);
     saveData();
-    res.status(200).json({ password: beerData[personName].password });
+    res.status(200).json({ password: beerData[name].password });
   } else {
     res.status(404).json({ error: 'Person not found' });
   }
 });
 
 // Delete the data
-app.delete('/api/people/:personName', (req, res) => {
-  const { personName } = req.params;
-  if (beerData[personName]) {
-    delete beerData[personName];
+app.delete('/api/people/:name', (req, res) => {
+  const { name } = req.params;
+  if (beerData[name]) {
+    delete beerData[name];
     saveData();
     res.status(200).json(beerData);
   } else {
@@ -176,7 +184,7 @@ app.get('/api/people', (req, res) => {
   res.json(Object.values(beerData));
 });
 
-app.get('/api/people/:personName', (req, res) => {
+app.get('/api/people/:name', (req, res) => {
   const { personName } = req.params;
   const person = beerData[personName];
   if (person) {

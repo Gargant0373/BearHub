@@ -11,8 +11,11 @@ function Home() {
     };
 
     const handleSubmit = (event: any) => {
-        event.preventDefault();
-
+        if(!name) {
+            event.preventDefault();
+            alert("Please enter your name.");
+            return;
+        }
         navigate('/beers', { state: { name } });
     };
 

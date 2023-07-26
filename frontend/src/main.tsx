@@ -9,7 +9,7 @@ import Beers from './pages/Beers';
 import UserPage from './pages/UserPage';
 
 const props = {
-  SERVER_PATH: 'https://thegrill.gargant.dev'
+  SERVER_PATH: 'http://localhost:4999'
 }
 
 const router = createBrowserRouter([
