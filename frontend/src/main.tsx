@@ -9,7 +9,7 @@ import Beers from './pages/Beers';
 import UserPage from './pages/UserPage';
 
 const props = {
-  SERVER_PATH: 'http://localhost:4999'
+  SERVER_PATH: '',
 }
 
 const router = createBrowserRouter([

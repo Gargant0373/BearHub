@@ -18,6 +18,7 @@ let beerData = {};
 
 const SMALL_BEER_PRICE = 5;
 const BIG_BEER_PRICE = 8;
+const BEEF_JERKY_PRICE = 15;
 
 // Load existing data from the JSON file
 fs.readFile(dataFilePath, 'utf8', (err, data) => {
@@ -48,6 +49,9 @@ app.use((req, res, next) => {
     logObject.action = 'PAY';
     logObject.personName = req.url.split('/')[3].trim();
     logObject.paidAmount = beerData[logObject.personName]?.toPay;
+  } else if (req.url.includes('/beefJerky')) {
+    logObject.action = 'ADD_BEEF_JERKY';
+    logObject.personName = req.url.split('/')[3].trim();
   } else {
     logObject.action = 'UNKNOWN';
   }
@@ -81,14 +85,14 @@ app.use((req, res, next) => {
 app.get('/api/people/:name/validatePassword', (req, res) => {
   const { name } = req.params;
   const { password } = req.query;
-  
+
   if (!password) {
     res.status(400).json({ error: 'Password not provided' });
     return;
   }
 
   let hashedPassword = crypto.SHA256(password).toString(crypto.enc.Base64);
-  
+
   if (beerData[name]) {
     const savedPassword = beerData[name].password;
 
@@ -132,6 +136,33 @@ app.delete('/api/people/:name', (req, res) => {
   }
 });
 
+// Add a GET endpoint to retrieve the amount of beef jerky for a specific person
+app.get('/api/people/:personName/beefJerky', (req, res) => {
+  const { personName } = req.params;
+  if (beerData[personName]) {
+    const beefJerkyAmount = beerData[personName].beefJerky || 0;
+    res.status(200).json({ beefJerkyAmount });
+  } else {
+    res.status(404).json({ error: 'Person not found' });
+  }
+});
+
+// Add a POST endpoint to add beef jerky for a specific person
+app.post('/api/people/:personName/beefJerky', (req, res) => {
+  const { personName } = req.params;
+  if (beerData[personName]) {
+    beerData[personName].beefJerky = (beerData[personName].beefJerky || 0) + 1;
+    beerData[personName].toPay += BEEF_JERKY_PRICE;
+    saveData();
+    res.status(201).json(beerData[personName]);
+  } else {
+    const newPerson = { name: personName, smallBeers: 0, bigBeers: 0, toPay: BEEF_JERKY_PRICE, beefJerky: 1 };
+    beerData[personName] = newPerson;
+    saveData();
+    res.status(201).json(newPerson);
+  }
+});
+
 // Save data to the JSON file
 const saveData = () => {
   fs.writeFile(dataFilePath, JSON.stringify(beerData, null, 2), 'utf8', (err) => {
@@ -166,7 +197,7 @@ app.post('/api/people/:personName/beers', (req, res) => {
     saveData();
     res.status(201).json(beerData[personName]);
   } else {
-    const newPerson = { name: personName, smallBeers: 0, bigBeers: 0, toPay: 0 };
+    const newPerson = { name: personName, smallBeers: 0, bigBeers: 0, beefJerky: 0, toPay: 0 };
     if (type === 'small') {
       newPerson.smallBeers = 1;
       newPerson.toPay = SMALL_BEER_PRICE;

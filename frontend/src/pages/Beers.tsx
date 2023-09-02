@@ -10,6 +10,7 @@ interface PersonData {
   smallBeers: number;
   bigBeers: number;
   toPay: number;
+  beefJerky: number;
   password?: string;
 }
 
@@ -40,6 +41,15 @@ function Beers(props: { SERVER_PATH: string }) {
       setPeopleData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
+    }
+  };
+
+  const addJerky = async (personName: string) => {
+    try {
+      await axios.post(`${props.SERVER_PATH}/api/people/${personName}/beefJerky`);
+      fetchData();
+    } catch (error) {
+      console.error('Error adding beef jerky:', error);
     }
   };
 
@@ -150,12 +160,34 @@ function Beers(props: { SERVER_PATH: string }) {
               </Button>
             </Grid>
           </Grid>
+          <Grid container spacing={1} item xs={6} display="flex" justifyContent="center" alignItems="center">
+            <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+              <Box sx={{
+                width: {
+                  xs: '80%',
+                  md: '50%'
+                },
+                height: "auto"
+              }}>
+                <img src="/jerky.jpeg" width="100%" height="auto" />
+              </Box>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="h5" fontSize="100%" textAlign="center">Beef Jerky</Typography>
+            </Grid>
+            <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
+              <Button variant="contained" onClick={() => addJerky(name)}>
+                +
+              </Button>
+            </Grid>
+          </Grid>
         </Grid>
         <BeerData name={name} peopleData={peopleData} paidPerson={paidPerson} deletePerson={deletePerson} />
         <Grid item xs={12} md={6}>
           <TodayGraph SERVER_PATH={props.SERVER_PATH} />
         </Grid>
-      </Grid ></>
+      </Grid >
+      </>
   );
 };
 
@@ -174,6 +206,7 @@ function BeerData(props: { name: string, peopleData: PersonData[], paidPerson: (
                 )}
                 <TableCell>Small Beers</TableCell>
                 <TableCell>Big Beers</TableCell>
+                <TableCell>Beef Jerkys</TableCell>
                 <TableCell>Total (L)</TableCell>
                 {props.name === 'Dani' && (
                   <>
@@ -190,8 +223,9 @@ function BeerData(props: { name: string, peopleData: PersonData[], paidPerson: (
                   )}
                   <TableCell>{person.smallBeers}</TableCell>
                   <TableCell>{person.bigBeers}</TableCell>
+                  <TableCell>{person.beefJerky}</TableCell>
                   <TableCell>
-                    {Math.round(person.smallBeers * SMALL_BEER_SIZE + person.bigBeers * BIG_BEER_SIZE)} L
+                    {(person.smallBeers * SMALL_BEER_SIZE + person.bigBeers * BIG_BEER_SIZE).toFixed(2)} L
                   </TableCell>
                   {props.name === 'Dani' && (
                     <>
