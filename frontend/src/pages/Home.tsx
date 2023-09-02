@@ -7,7 +7,7 @@ function Home() {
     const [name, setName] = useState('');
 
     const handleNameChange = (event: any) => {
-        setName(event.target.value);
+        setName(event.target.value.trim());
     };
 
     const handleSubmit = (event: any) => {

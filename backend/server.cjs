@@ -137,7 +137,7 @@ app.delete('/api/people/:name', (req, res) => {
 });
 
 // Add a GET endpoint to retrieve the amount of beef jerky for a specific person
-app.get('/api/people/:personName/beefJerky', (req, res) => {
+app.get('/api/people/:name/beefJerky', (req, res) => {
   const { personName } = req.params;
   if (beerData[personName]) {
     const beefJerkyAmount = beerData[personName].beefJerky || 0;
@@ -148,16 +148,16 @@ app.get('/api/people/:personName/beefJerky', (req, res) => {
 });
 
 // Add a POST endpoint to add beef jerky for a specific person
-app.post('/api/people/:personName/beefJerky', (req, res) => {
-  const { personName } = req.params;
-  if (beerData[personName]) {
-    beerData[personName].beefJerky = (beerData[personName].beefJerky || 0) + 1;
-    beerData[personName].toPay += BEEF_JERKY_PRICE;
+app.post('/api/people/:name/beefJerky', (req, res) => {
+  const { name } = req.params;
+  if (beerData[name]) {
+    beerData[name].beefJerky = (beerData[name].beefJerky || 0) + 1;
+    beerData[name].toPay += BEEF_JERKY_PRICE;
     saveData();
-    res.status(201).json(beerData[personName]);
+    res.status(201).json(beerData[name]);
   } else {
-    const newPerson = { name: personName, smallBeers: 0, bigBeers: 0, toPay: BEEF_JERKY_PRICE, beefJerky: 1 };
-    beerData[personName] = newPerson;
+    const newPerson = { name: name, smallBeers: 0, bigBeers: 0, toPay: BEEF_JERKY_PRICE, beefJerky: 1 };
+    beerData[name] = newPerson;
     saveData();
     res.status(201).json(newPerson);
   }
