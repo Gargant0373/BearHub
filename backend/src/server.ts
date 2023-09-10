@@ -45,11 +45,11 @@ app.get(`${api_path}/person/:name/password`, checkPassword);
 // Set password
 app.post(`${api_path}/person/:name/password`, setPassword);
 
-// Get statistics
-app.get(`${api_path}/stat/:key`, getStats);
-
 // Increment consumption
 app.post(`${api_path}/person/:name/increment`, increment);
+
+// Get statistics
+app.get(`${api_path}/stat/:key`, getStats);
 
 // Get all the beers
 app.get(`${api_path}/beer`, getBeers);
