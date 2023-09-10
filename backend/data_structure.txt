@@ -1,0 +1,34 @@
+people {
+	dani {
+		password: #asci sha256
+		admin: #boolean	
+		small_beers: # int
+		big_beers: # int
+		beef_jerky: # int
+	}
+}
+
+beer_data {
+	dani {
+		small_beers: #int
+		big_beers: # int
+		beef_jerky: # int		
+	}
+}
+
+logs {
+	date {
+		action: # ADD / PAY / DELETE
+		extra: # BEER / SUM
+		person: # string
+		handler: # string
+	}
+}	
+
+stats {
+	month_year {
+		small_beers:
+		big_beers:
+		beef_jerky:
+	}
+}
