@@ -30,7 +30,7 @@ let loadBeerData = () => {
 };
 
 let getBeers = (req: any, res: any) => {
-    res.json(BeerData);
+  res.json(BeerData);
 }
 
 let getBeer = (req: any, res: any) => {
@@ -52,31 +52,31 @@ let getBeer = (req: any, res: any) => {
 };
 
 let payBeer = (req: any, res: any) => {
-    let name = req.params.name;
+  let name = req.params.name;
 
-    if(!BeerData[name]) {
-        res.status(404).send("Person not found");
-        return;
-    }
-
-    BeerData[name].to_pay = 0;
-
-    res.status(200).send("Payment successful");
+  if (!BeerData[name]) {
+    res.status(404).send("Person not found");
     return;
+  }
+
+  BeerData[name].to_pay = 0;
+
+  res.status(200).send("Payment successful");
+  return;
 }
 
 let deleteBeer = (req: any, res: any) => {
-    let name = req.params.name;
+  let name = req.params.name;
 
-    if(!BeerData[name]) {
-        res.status(404).send("Person not found");
-        return;
-    }
-
-    delete BeerData[name];
-
-    res.status(200).send("Person deleted");
+  if (!BeerData[name]) {
+    res.status(404).send("Person not found");
     return;
+  }
+
+  delete BeerData[name];
+
+  res.status(200).send("Person deleted");
+  return;
 }
 
 let verifyConsumer = (name: string) => {
@@ -150,7 +150,7 @@ export {
   loadBeerData,
   getBeers,
   getBeer,
-  payBeer, 
+  payBeer,
   deleteBeer,
   increaseSmallBeer,
   increaseBigBeer,
