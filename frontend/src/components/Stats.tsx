@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { Stat } from "../api/DataTypes";
-import { getStatData } from "../api/ApiHandler";
-import { Divider, Grid, Table, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { Grid, Table, TableCell, TableHead, TableRow, Tooltip, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { getStatData } from "../api/ApiHandler";
+import { Stat } from "../api/DataTypes";
 
 function Stats() {
 
