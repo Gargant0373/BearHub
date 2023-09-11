@@ -1,8 +1,8 @@
 import { Button, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Logs from '../components/Stats';
 import { PasswordField } from '../components/Password';
 import Stats from '../components/Stats';
+import UserLookup from '../components/UserLookup';
 
 function UserPage() {
     const location = useLocation();
@@ -43,6 +43,10 @@ function UserPage() {
             </Grid>}
             <Grid item xs={12} md={6}>
                 <Stats />
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+                <UserLookup />
             </Grid>
         </Grid >
     );
