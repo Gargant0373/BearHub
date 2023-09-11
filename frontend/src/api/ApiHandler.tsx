@@ -58,15 +58,7 @@ async function checkPassword(name: string, password: string): Promise<boolean> {
     }
 }
 
-async function getStatData(): Promise<Stat> {
-    let currentDate = new Date();
-
-    // Get the year and month as numbers
-    let currentYear = currentDate.getFullYear();
-    let currentMonth = currentDate.getMonth() + 1;
-
-    let key = currentYear * 100 + currentMonth;
-
+async function getStatData(key: number): Promise<Stat> {
     try {
         const response = await axios.get(`${server_path}${api_path}/stat/${key}`);
         return response.data as Stat;
