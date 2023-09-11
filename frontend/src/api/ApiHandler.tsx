@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Beer, Person } from './DataTypes';
+import { Beer, Person, Stat } from './DataTypes';
 
 const server_path = ""
 const api_path = "/api/v2"
@@ -58,4 +58,22 @@ async function checkPassword(name: string, password: string): Promise<boolean> {
     }
 }
 
-export { getPersonsData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword };
+async function getStatData(): Promise<Stat> {
+    let currentDate = new Date();
+
+    // Get the year and month as numbers
+    let currentYear = currentDate.getFullYear();
+    let currentMonth = currentDate.getMonth() + 1;
+
+    let key = currentYear * 100 + currentMonth;
+
+    try {
+        const response = await axios.get(`${server_path}${api_path}/stat/${key}`);
+        return response.data as Stat;
+    } catch (error: any) {
+        console.error(error.message);
+        return { small_beers: 0, big_beers: 0, beef_jerky: 0 };
+    }
+}
+
+export { getPersonsData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword, getStatData };
