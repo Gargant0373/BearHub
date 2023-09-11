@@ -18,7 +18,7 @@ interface Log {
   paidAmount?: number;
 }
 
-function Logs(props: { SERVER_PATH: string }) {
+function Logs() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(new Date());
   const [logs, setLogs] = useState<Log[]>([]);
   const [page, setPage] = useState(0);
@@ -28,7 +28,7 @@ function Logs(props: { SERVER_PATH: string }) {
       try {
         if (selectedDate) {
           const formattedDate = format(selectedDate, 'yyyy-MM-dd');
-          const response = await axios.get(`${props.SERVER_PATH}/api/logs/${formattedDate}`);
+          const response = await axios.get(``);
           setLogs(response.data);
           setPage(0);
         }

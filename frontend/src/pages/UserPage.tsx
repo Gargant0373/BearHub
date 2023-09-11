@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import Logs from '../components/Logs';
 import { PasswordField } from '../components/Password';
 
-function UserPage(props: { SERVER_PATH: string }) {
+function UserPage() {
     const location = useLocation();
     const navigate = useNavigate();
 
@@ -35,13 +35,13 @@ function UserPage(props: { SERVER_PATH: string }) {
             <Grid item xs={12}>
                 <Divider />
             </Grid>
-            <PasswordField SERVER_PATH={props.SERVER_PATH} />
+            <PasswordField />
 
             {isMatch && <Grid item xs={12}>
                 <Divider />
             </Grid>}
             <Grid item xs={12} md={6}>
-                <Logs {...props} />
+                <Logs />
             </Grid>
         </Grid >
     );

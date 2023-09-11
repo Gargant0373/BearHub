@@ -30,7 +30,7 @@ let loadBeerData = () => {
 };
 
 let getBeers = (req: any, res: any) => {
-  res.json(BeerData);
+  res.status(200).json(BeerData);
 }
 
 let getBeer = (req: any, res: any) => {

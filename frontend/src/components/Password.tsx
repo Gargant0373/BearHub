@@ -1,21 +1,8 @@
 import { Button, Divider, Grid, TextField, Typography } from "@mui/material";
-import axios from "axios";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 
-// Function to update the password on the server
-async function updatePassword(SERVER_PATH: string, name: string, password: string) {
-    try {
-        await axios.post(`${SERVER_PATH}/api/people/${name}/password`, {
-            password: password
-        });
-
-    } catch (error: any) {
-        console.error(error.message);
-    }
-}
-
-function PasswordField(props: { SERVER_PATH: string }) {
+function PasswordField() {
     const location = useLocation();
     const { name } = location.state as { name: string };
 
@@ -43,7 +30,6 @@ function PasswordField(props: { SERVER_PATH: string }) {
                     <Button type="submit" variant="contained" onClick={
                         (event) => {
                             event.preventDefault();
-                            updatePassword(props.SERVER_PATH, name, password);
                         }
                     }>Set Password</Button>
                 </Grid>
@@ -53,24 +39,7 @@ function PasswordField(props: { SERVER_PATH: string }) {
     )
 }
 
-// Function to check if the provided password matches the password from the data
-async function checkPasswordMatch(SERVER_PATH: string, name: string, password: string): Promise<boolean> {
-    try {
-        const response = await axios.get(`${SERVER_PATH}/api/people/${name}/validatePassword`, {
-           params: {password: password}
-        });
-
-        if (response && response.data && response.data.valid) {
-            return response.data.valid;
-        }
-    } catch (error: any) {
-        console.error(error.message);
-    }
-
-    return false;
-}
-
-function Login(props: { SERVER_PATH: string, setLogged: any }) {
+function Login(props: { setLogged: any }) {
     const location = useLocation();
     const { name } = location.state as { name: string };
     
@@ -95,7 +64,7 @@ function Login(props: { SERVER_PATH: string, setLogged: any }) {
                 <Grid item xs={12}>
                     <Button type="submit" variant="contained" onClick={
                         async () => {
-                            const isMatch: boolean = await checkPasswordMatch(props.SERVER_PATH, name, providedPassword);
+                            const isMatch = true;
                             if (isMatch) {
                                 props.setLogged(true);
                                 return;

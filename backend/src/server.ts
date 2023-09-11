@@ -15,6 +15,7 @@ import { Beer, Log, Person, Stat } from "./data_types";
 // Initialize the app
 const express = require("express");
 const app = express();
+const cors = require("cors");
 
 // Port on which the server will run on
 const port = 4999;

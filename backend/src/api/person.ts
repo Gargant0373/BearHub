@@ -199,6 +199,7 @@ let increment = (req: any, res: any) => {
       return;
   }
 
+  console.log(`Incremented ${name} with ${type}.`);
   savePeople();
   res.status(200).send("Incremented.");
 };

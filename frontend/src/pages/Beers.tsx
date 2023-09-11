@@ -1,27 +1,14 @@
 import { Box, Button, Divider, Grid, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import TodayGraph from '../components/TodayGraph';
 import { Login } from '../components/Password';
+import { deleteBeerData, getBeersData, getPersonsData, incrementBeerData, payBeerData } from '../api/ApiHandler';
+import { Beer, Person } from '../api/DataTypes';
 
-interface PersonData {
-  name: string; // this is the ID
-  smallBeers: number;
-  bigBeers: number;
-  toPay: number;
-  beefJerky: number;
-  password?: string;
-}
-
-const SMALL_BEER_SIZE = 0.33;
-const BIG_BEER_SIZE = 0.5;
-
-function Beers(props: { SERVER_PATH: string }) {
+function Beers() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [peopleData, setPeopleData] = useState<PersonData[]>([]);
   const [logged, setLogged] = useState<boolean>(false);
 
   if (!location.state) {
@@ -31,63 +18,31 @@ function Beers(props: { SERVER_PATH: string }) {
 
   const { name } = location.state as { name: string };
 
+  const [beerData, setBeerData] = useState<Record<string, Beer>>({});
+  const [personData, setPersonData] = useState<Record<string, Person>>({});
+
   useEffect(() => {
     fetchData();
   }, []);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(`${props.SERVER_PATH}/api/people`);
-      setPeopleData(response.data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-
-  const addJerky = async (personName: string) => {
-    try {
-      await axios.post(`${props.SERVER_PATH}/api/people/${personName}/beefJerky`);
-      fetchData();
-    } catch (error) {
-      console.error('Error adding beef jerky:', error);
-    }
-  };
-
-  const addBeer = async (personName: string, beerType: 'small' | 'big') => {
-    try {
-      await axios.post(`${props.SERVER_PATH}/api/people/${personName}/beers`, { type: beerType });
-      fetchData();
-    } catch (error) {
-      console.error('Error adding beer:', error);
-    }
-  };
-
-  const deletePerson = async (personName: string) => {
-    try {
-      await axios.delete(`${props.SERVER_PATH}/api/people/${personName}`);
-      fetchData();
-    } catch (error) {
-      console.error('Error deleting person:', error);
-    }
-  };
-
-  const paidPerson = async (personName: string) => {
-    try {
-      if (peopleData.find((person) => person.name === personName)?.toPay === 0) return;
-      await axios.post(`${props.SERVER_PATH}/api/people/${personName}/pay`);
-      fetchData();
-    } catch (error) {
-      console.error('Error paying person:', error);
+      setBeerData(await getBeersData());
+      setPersonData(await getPersonsData());
+    } catch (error: any) {
+      console.error(error.message);
     }
   };
 
   {
-    if (peopleData.find((person) => person.name === name)?.password != null && !logged) {
+    if (personData[name] && personData[name]?.password && !logged) {
       return (
-        <Login SERVER_PATH={props.SERVER_PATH} setLogged={setLogged} />
+        <Login setLogged={setLogged} />
       )
     }
   }
+
+  const admin: boolean = personData[name] != undefined && personData[name].admin == true;
 
   return (
     <>
@@ -105,7 +60,7 @@ function Beers(props: { SERVER_PATH: string }) {
             }} />
           </Grid>
           <Grid item xs={0} md={2} />
-          {name === 'Dani' && (
+          {admin && (
             <Grid item xs={12} md={8} sx={{
               justifyContent: { xs: 'center', md: 'right' }
             }} display="flex" alignItems="right">
@@ -117,7 +72,7 @@ function Beers(props: { SERVER_PATH: string }) {
           )}
           <Grid item xs={0} md={2} />
         </Grid>
-        <Grid item xs={12} spacing={3} display="flex" justifyContent="center" alignItems="center">
+        <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
           <Grid container spacing={1} item xs={6} display="flex" justifyContent="center" alignItems="center">
             <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
               <Box sx={{
@@ -134,7 +89,10 @@ function Beers(props: { SERVER_PATH: string }) {
               <Typography variant="h5" fontSize="100%" textAlign="center">Small Beer</Typography>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-              <Button variant="contained" onClick={() => addBeer(name, 'small')}>
+              <Button variant="contained" onClick={() => {
+                incrementBeerData(name, 'small');
+                fetchData();
+              }}>
                 +
               </Button>
             </Grid>
@@ -155,7 +113,10 @@ function Beers(props: { SERVER_PATH: string }) {
               <Typography variant="h5" fontSize="100%" textAlign="center">Large Beer</Typography>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-              <Button variant="contained" onClick={() => addBeer(name, 'big')}>
+              <Button variant="contained" onClick={() => {
+                incrementBeerData(name, 'big');
+                fetchData();
+              }}>
                 +
               </Button>
             </Grid>
@@ -176,22 +137,27 @@ function Beers(props: { SERVER_PATH: string }) {
               <Typography variant="h5" fontSize="100%" textAlign="center">Beef Jerky</Typography>
             </Grid>
             <Grid item xs={12} display="flex" justifyContent="center" alignItems="center">
-              <Button variant="contained" onClick={() => addJerky(name)}>
+              <Button variant="contained" onClick={() => {
+                incrementBeerData(name, 'jerky');
+                fetchData();
+              }}>
                 +
               </Button>
             </Grid>
           </Grid>
         </Grid>
-        <BeerData name={name} peopleData={peopleData} paidPerson={paidPerson} deletePerson={deletePerson} />
-        <Grid item xs={12} md={6}>
-          <TodayGraph SERVER_PATH={props.SERVER_PATH} />
-        </Grid>
+        <BeerData name={name} beerData={beerData} personData={personData} admin={admin} fetchData={fetchData} />
       </Grid >
-      </>
+    </>
   );
 };
 
-function BeerData(props: { name: string, peopleData: PersonData[], paidPerson: (personName: string) => void, deletePerson: (personName: string) => void }) {
+function BeerData(props: {
+  name: string, beerData: Record<string, Beer>,
+  personData: Record<string, Person>,
+  admin: boolean,
+  fetchData: () => Promise<void>
+}) {
   return (
     <>
       <Grid item xs={12} md={6} display="flex" justifyContent="right" alignItems="right">
@@ -201,14 +167,14 @@ function BeerData(props: { name: string, peopleData: PersonData[], paidPerson: (
           <Table>
             <TableHead>
               <TableRow>
-                {props.name === 'Dani' && (
+                {props.admin && (
                   <TableCell>Name</TableCell>
                 )}
                 <TableCell>Small Beers</TableCell>
                 <TableCell>Big Beers</TableCell>
                 <TableCell>Beef Jerkys</TableCell>
                 <TableCell>Total (L)</TableCell>
-                {props.name === 'Dani' && (
+                {props.admin && (
                   <>
                     <TableCell>Total</TableCell>
                   </>
@@ -216,36 +182,43 @@ function BeerData(props: { name: string, peopleData: PersonData[], paidPerson: (
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.peopleData.filter(person => person.name === props.name || props.name === 'Dani').map((person) => (
-                <TableRow key={person.name}>
-                  {props.name === 'Dani' && (
-                    <TableCell>{person.name}</TableCell>
-                  )}
-                  <TableCell>{person.smallBeers}</TableCell>
-                  <TableCell>{person.bigBeers}</TableCell>
-                  <TableCell>{person.beefJerky}</TableCell>
-                  <TableCell>
-                    {(person.smallBeers * SMALL_BEER_SIZE + person.bigBeers * BIG_BEER_SIZE).toFixed(2)} L
-                  </TableCell>
-                  {props.name === 'Dani' && (
-                    <>
+              {
+                Object.keys(props.beerData).filter((c: string) => c === props.name || props.admin)
+                  .map((c: string) => (
+                    <TableRow key={c}>
+                      {props.admin && (
+                        <TableCell>{c}</TableCell>
+                      )}
+                      <TableCell>{props.beerData[c].small_beers}</TableCell>
+                      <TableCell>{props.beerData[c].big_beers}</TableCell>
+                      <TableCell>{props.beerData[c].beef_jerky}</TableCell>
                       <TableCell>
-                        {person.toPay ? person.toPay : 0}
+                        {(props.beerData[c].small_beers * 0.33 + props.beerData[c].big_beers * 0.5).toFixed(2)} L
                       </TableCell>
-                      <TableCell>
-                        <Button variant="contained" onClick={() => props.paidPerson(person.name)}>
-                          Paid
-                        </Button>
-                      </TableCell>
-                      <TableCell>
-                        <Button variant="contained" onClick={() => props.deletePerson(person.name)}>
-                          Delete
-                        </Button>
-                      </TableCell>
-                    </>
-                  )}
-                </TableRow>
-              ))}
+                      {props.admin && (
+                        <>
+                          <TableCell>
+                            {props.beerData[c].to_pay}
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="contained" onClick={() => {
+                              payBeerData(c);
+                              props.fetchData();
+                            }}>
+                              Paid
+                            </Button>
+                          </TableCell>
+                          <TableCell>
+                            <Button variant="contained" onClick={() => {
+                              deleteBeerData(c); props.fetchData();
+                            }}>
+                              Delete
+                            </Button>
+                          </TableCell>
+                        </>
+                      )}
+                    </TableRow>
+                  ))}
             </TableBody>
           </Table>
         </TableContainer>

@@ -8,20 +8,16 @@ import Home from './pages/Home';
 import Beers from './pages/Beers';
 import UserPage from './pages/UserPage';
 
-const props = {
-  SERVER_PATH: '',
-}
-
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Home />,
   }, {
     path: "/beers",
-    element: <Beers {...props} />,
+    element: <Beers />,
   }, {
     path: "/user",
-    element: <UserPage {...props} />,
+    element: <UserPage />,
   }
 ]);
 
