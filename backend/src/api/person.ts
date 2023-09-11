@@ -90,7 +90,7 @@ let checkPassword = (req: any, res: any) => {
 
   // Check if person exists
   if (!(name in PersonData)) {
-    res.status(404).send("Person not found");
+    res.status(404).json(false);
     return;
   }
 
@@ -99,7 +99,7 @@ let checkPassword = (req: any, res: any) => {
     PersonData[name].password === null ||
     PersonData[name].password === undefined
   ) {
-    res.status(403).send("Password not set");
+    res.status(403).json(false);
     return;
   }
 
@@ -107,7 +107,7 @@ let checkPassword = (req: any, res: any) => {
 
   // Check if password is not provided
   if (password === null || password === undefined) {
-    res.status(400).send("Password not provided");
+    res.status(400).json(false);
     return;
   }
 
@@ -115,11 +115,11 @@ let checkPassword = (req: any, res: any) => {
 
   // Check if password matches
   if (PersonData[name].password !== hashedPassword) {
-    res.status(403).send("Incorrect password");
+    res.json(false);
     return;
   }
 
-  res.status(200).send("Correct password");
+  res.status(200).json(true);
 };
 
 let setPassword = (req: any, res: any) => {

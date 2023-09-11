@@ -48,4 +48,14 @@ async function deleteBeerData(name: string) {
     }
 }
 
-export { getPersonsData, getBeersData, incrementBeerData, payBeerData, deleteBeerData };
+async function checkPassword(name: string, password: string): Promise<boolean> {
+    try {
+        const response = await axios.get(`${server_path}${api_path}/person/${name}/password?password=${password}`);
+        return response.data as boolean;
+    } catch (error: any) {
+        console.error(error.message);
+        return false;
+    }
+}
+
+export { getPersonsData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword };

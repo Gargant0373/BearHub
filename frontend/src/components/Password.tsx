@@ -1,11 +1,9 @@
 import { Button, Divider, Grid, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { checkPassword } from "../api/ApiHandler";
 
 function PasswordField() {
-    const location = useLocation();
-    const { name } = location.state as { name: string };
-
     const [password, setPassword] = useState('');
 
     return (
@@ -64,12 +62,14 @@ function Login(props: { setLogged: any }) {
                 <Grid item xs={12}>
                     <Button type="submit" variant="contained" onClick={
                         async () => {
-                            const isMatch = true;
-                            if (isMatch) {
-                                props.setLogged(true);
+                            let valid: boolean = await checkPassword(name, providedPassword);
+                            if(!valid) {
+                                alert('Invalid Password!');
+                                setProvidedPassword('');
                                 return;
                             }
-                            alert('Incorrect password');
+
+                            props.setLogged(true);
                         }
                     } sx={{
                         marginTop: "10px",
