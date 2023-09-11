@@ -160,9 +160,9 @@ function BeerData(props: {
 }) {
   return (
     <>
-      <Grid item xs={12} md={6} display="flex" justifyContent="right" alignItems="right">
+      <Grid item xs={12} md={8} display="flex" justifyContent="right" alignItems="right">
         <TableContainer>
-          <Typography variant="h5" fontSize="150%">Your Consumption</Typography>
+          <Typography variant="h5" fontSize="150%" textAlign="center" marginTop="15px">Your Consumption</Typography>
           <Divider />
           <Table>
             <TableHead>
