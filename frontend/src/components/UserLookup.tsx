@@ -7,7 +7,7 @@ function UserLookup() {
     const [personData, setPersonData] = useState<Record<string, Person>>({});
     const [filter, setFilter] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const itemsPerPage = 2;
+    const itemsPerPage = 8;
 
     useEffect(() => {
         fetchData();
