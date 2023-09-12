@@ -1,6 +1,5 @@
 import { deleteBeer, getBeer, getBeers, loadBeerData, payBeer } from "./api/beer";
 import {
-  PersonData,
   getPerson,
   createPerson,
   getAllPeople,
@@ -14,7 +13,6 @@ import { getStats, loadStatData, getMeter } from "./api/stat";
 // Initialize the app
 const express = require("express");
 const app = express();
-const cors = require("cors");
 
 // Port on which the server will run on
 const port = 4999;
@@ -48,11 +46,11 @@ app.post(`${api_path}/person/:name/password`, setPassword);
 // Increment consumption
 app.post(`${api_path}/person/:name/increment`, increment);
 
-// Get statistics
-app.get(`${api_path}/stat/:key`, getStats);
-
 // Get meter
 app.get(`${api_path}/stat/meter`, getMeter);
+
+// Get statistics
+app.get(`${api_path}/stat/:key`, getStats);
 
 // Get all the beers
 app.get(`${api_path}/beer`, getBeers);

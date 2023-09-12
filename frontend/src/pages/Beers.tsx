@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Login } from '../components/Password';
 import { deleteBeerData, getBeersData, getPersonsData, incrementBeerData, payBeerData } from '../api/ApiHandler';
 import { Beer, Person } from '../api/DataTypes';
+import { Meter } from '../components/Meter';
 
 function Beers() {
   const location = useLocation();
@@ -146,7 +147,15 @@ function Beers() {
             </Grid>
           </Grid>
         </Grid>
-        <BeerData name={name} beerData={beerData} personData={personData} admin={admin} fetchData={fetchData} />
+        <Grid item xs={12}>
+          <BeerData name={name} beerData={beerData} personData={personData} admin={admin} fetchData={fetchData} />
+        </Grid>
+        <Grid item xs={12}>
+          <Divider />
+        </Grid>
+        <Grid item xs={12}>
+          <Meter beerData={beerData} />
+        </Grid>
       </Grid >
     </>
   );

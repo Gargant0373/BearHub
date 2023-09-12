@@ -1,8 +1,13 @@
 let consumption: number = 0;
 let lastReset: Date = new Date();
 
+let getConsumption = () => {
+    return consumption;
+}
+
 let incrementMeter = (liters: number) => {
     consumption += liters;
+    checkReset();
 }
 
 let checkReset = () => {
@@ -13,4 +18,4 @@ let checkReset = () => {
     }
 }
 
-export { consumption, incrementMeter };
+export { getConsumption, incrementMeter };

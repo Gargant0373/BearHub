@@ -1,5 +1,5 @@
 import { Stat } from "../data_types";
-import { consumption } from "./meter";
+import { getConsumption } from "./meter";
 
 const fs = require("fs");
 
@@ -47,7 +47,7 @@ let getStats = (req: any, res: any) => {
 };
 
 let getMeter = (req: any, res: any) => {
-  res.json(consumption);
+  res.json(getConsumption());
 };
 
 // Get the key for the data that has format yyyymm
