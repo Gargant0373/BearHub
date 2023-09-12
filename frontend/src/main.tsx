@@ -1,11 +1,11 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import Home from './pages/Home';
 import Beers from './pages/Beers';
+import Home from './pages/Home';
 import UserPage from './pages/UserPage';
 
 const router = createBrowserRouter([

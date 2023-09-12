@@ -10,12 +10,13 @@ function Home() {
         setName(event.target.value.trim());
     };
 
-    const handleSubmit = (event: any) => {
-        if(!name) {
+    const handleSubmit = async (event: any) => {
+        if (!name) {
             event.preventDefault();
             alert("Please enter your name.");
             return;
         }
+
         navigate('/beers', { state: { name } });
     };
 

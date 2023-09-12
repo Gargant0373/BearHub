@@ -9,8 +9,7 @@ import {
   loadPersonData,
   increment,
 } from "./api/person";
-import { getStats, loadStatData } from "./api/stat";
-import { Beer, Log, Person, Stat } from "./data_types";
+import { getStats, loadStatData, getMeter } from "./api/stat";
 
 // Initialize the app
 const express = require("express");
@@ -51,6 +50,9 @@ app.post(`${api_path}/person/:name/increment`, increment);
 
 // Get statistics
 app.get(`${api_path}/stat/:key`, getStats);
+
+// Get meter
+app.get(`${api_path}/stat/meter`, getMeter);
 
 // Get all the beers
 app.get(`${api_path}/beer`, getBeers);

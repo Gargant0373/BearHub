@@ -11,6 +11,7 @@ import {
   increaseBeefJerky,
   increaseToPay,
 } from "./beer";
+import { log } from "console";
 
 const fs = require("fs");
 
@@ -36,7 +37,6 @@ let loadPersonData = () => {
 
         // Assign the parsed data to the PersonData object
         PersonData = parsedData;
-        console.log(`Loaded PeopleData from file.`);
       }
     });
   } else {
@@ -69,6 +69,8 @@ let createPerson = (req: any, res: any) => {
     res.status(409).send("Person already exists");
     return;
   }
+
+  log({ name: name, action: "create", success: true });
 
   let newPerson: Person = {
     small_beers: 0,
@@ -148,6 +150,7 @@ let setPassword = (req: any, res: any) => {
   ) {
     PersonData[name].password = hashedPassword;
     res.status(200).send("Password set");
+    log({ name: name, action: "set_password", success: true });
     savePeople();
     return;
   }
@@ -158,10 +161,12 @@ let setPassword = (req: any, res: any) => {
   // Check if password matches
   if (PersonData[name].password !== hashedPasswordOld) {
     res.status(403).send("Incorrect password");
+    log({ name: name, action: "set_password", success: false, extra: "incorrect" });
     return;
   }
 
   PersonData[name].password = hashedPassword;
+  log({ name: name, action: "set_password", success: true, extra: "changed" });
   savePeople();
   res.status(200).send("Password set");
 };
@@ -171,8 +176,11 @@ let increment = (req: any, res: any) => {
   let type = req.query.type;
 
   if (!PersonData[name]) {
-    res.status(404).send("Person not found.");
-    return;
+    PersonData[name] = {
+      small_beers: 0,
+      big_beers: 0,
+      beef_jerky: 0,
+    }
   }
 
   switch (type) {
@@ -199,7 +207,6 @@ let increment = (req: any, res: any) => {
       return;
   }
 
-  console.log(`Incremented ${name} with ${type}.`);
   savePeople();
   res.status(200).send("Incremented.");
 };
@@ -214,8 +221,6 @@ let savePeople = () => {
     (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error(`Error saving person data to file: ${err.message}`);
-      } else {
-        console.log("Person data saved to file.");
       }
     }
   );

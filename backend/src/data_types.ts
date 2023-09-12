@@ -16,10 +16,12 @@ interface Stat {
 
 // Log data structure
 interface Log {
-  person_name: String;
+  name: String;
   action: String;
-  extra: String | number | null;
-  handler: String | null;
+  extra?: String | number;
+  success?: boolean;
+  handler?: String;
+  timestamp?: number;
 }
 
 // Beer data structure

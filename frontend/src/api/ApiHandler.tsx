@@ -32,17 +32,17 @@ async function incrementBeerData(name: string, type: string) {
     }
 }
 
-async function payBeerData(name: string) {
+async function payBeerData(name: string, handler: string) {
     try {
-        await axios.post(`${server_path}${api_path}/beer/${name}/pay`);
+        await axios.post(`${server_path}${api_path}/beer/${name}/pay?handler=${handler}`);
     } catch (error: any) {
         console.log(error.message);
     }
 }
 
-async function deleteBeerData(name: string) {
+async function deleteBeerData(name: string, handler: string) {
     try {
-        await axios.delete(`${server_path}${api_path}/beer/${name}`);
+        await axios.delete(`${server_path}${api_path}/beer/${name}?handler=${handler}`);
     } catch (error: any) {
         console.error(error.message);
     }
@@ -68,4 +68,14 @@ async function getStatData(key: number): Promise<Stat> {
     }
 }
 
-export { getPersonsData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword, getStatData };
+async function getMeter(): Promise<number> {
+    try {
+        const response = await axios.get(`${server_path}${api_path}/stat/meter`);
+        return response.data as number;
+    } catch (error: any) {
+        console.error(error.message);
+        return 0;
+    }
+}
+
+export { getPersonsData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword, getStatData, getMeter };

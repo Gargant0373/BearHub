@@ -1,4 +1,5 @@
 import { Stat } from "../data_types";
+import { consumption } from "./meter";
 
 const fs = require("fs");
 
@@ -18,7 +19,6 @@ let loadStatData = () => {
 
         // Assign the parsed data to the StatData object
         StatData = parsedData;
-        console.log(`Loaded StatData from file.`);
       }
     });
   } else {
@@ -44,6 +44,10 @@ let getStats = (req: any, res: any) => {
 
   res.json(StatData[key]);
   return;
+};
+
+let getMeter = (req: any, res: any) => {
+  res.json(consumption);
 };
 
 // Get the key for the data that has format yyyymm
@@ -110,11 +114,9 @@ let saveStat = () => {
     (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error(`Error saving person data to file: ${err.message}`);
-      } else {
-        console.log("Stat data saved to file.");
       }
     }
   );
 };
 
-export { loadStatData, getStats, incrementBeefJerky, incrementBigBeer, incrementSmallBeer };
+export { loadStatData, getStats, incrementBeefJerky, incrementBigBeer, incrementSmallBeer, getMeter };

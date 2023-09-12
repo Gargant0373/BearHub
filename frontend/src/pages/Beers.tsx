@@ -202,7 +202,7 @@ function BeerData(props: {
                           </TableCell>
                           <TableCell>
                             <Button variant="contained" onClick={() => {
-                              payBeerData(c);
+                              payBeerData(c, props.name);
                               props.fetchData();
                             }}>
                               Paid
@@ -210,7 +210,7 @@ function BeerData(props: {
                           </TableCell>
                           <TableCell>
                             <Button variant="contained" onClick={() => {
-                              deleteBeerData(c); props.fetchData();
+                              deleteBeerData(c, props.name); props.fetchData();
                             }}>
                               Delete
                             </Button>

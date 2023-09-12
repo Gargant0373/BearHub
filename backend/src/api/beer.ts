@@ -1,4 +1,7 @@
 import { Beer } from "../data_types";
+import { log } from "./log";
+import { incrementMeter } from "./meter";
+import { PersonData, createPerson } from "./person";
 
 const fs = require("fs");
 
@@ -18,7 +21,6 @@ let loadBeerData = () => {
 
         // Assign the parsed data to the StatData object
         BeerData = parsedData;
-        console.log(`Loaded BeerData from file.`);
       }
     });
   } else {
@@ -53,13 +55,23 @@ let getBeer = (req: any, res: any) => {
 
 let payBeer = (req: any, res: any) => {
   let name = req.params.name;
+  let handler = req.query.handler;
 
   if (!BeerData[name]) {
     res.status(404).send("Person not found");
+    log({ name: name, action: "pay", success: false, handler: handler });
+    return;
+  }
+
+  if (!PersonData[handler] && PersonData[handler].admin !== true) {
+    res.status(401).send("Unauthorized");
+    log({ name: name, action: "pay", success: false, handler: handler });
     return;
   }
 
   BeerData[name].to_pay = 0;
+
+  log({ name: name, action: "pay", extra: null, handler: handler });
 
   res.status(200).send("Payment successful");
   return;
@@ -67,13 +79,23 @@ let payBeer = (req: any, res: any) => {
 
 let deleteBeer = (req: any, res: any) => {
   let name = req.params.name;
+  let handler = req.query.handler;
 
   if (!BeerData[name]) {
     res.status(404).send("Person not found");
+    log({ name: name, action: "delete", success: false, handler: handler });
+    return;
+  }
+
+  if (!PersonData[handler] && PersonData[handler].admin !== true) {
+    res.status(401).send("Unauthorized");
+    log({ name: name, action: "delete", success: false, handler: handler });
     return;
   }
 
   delete BeerData[name];
+
+  log({ name: name, action: "delete", success: true, handler: handler });
 
   res.status(200).send("Person deleted");
   return;
@@ -96,7 +118,9 @@ let verifyConsumer = (name: string) => {
 let increaseSmallBeer = (name: string) => {
   verifyConsumer(name);
 
+  incrementMeter(0.33);
   BeerData[name].small_beers++;
+  log({ name: name, action: "increment", extra: "small" });
 
   saveBeer();
 };
@@ -105,7 +129,9 @@ let increaseSmallBeer = (name: string) => {
 let increaseBigBeer = (name: string) => {
   verifyConsumer(name);
 
+  incrementMeter(0.5);
   BeerData[name].big_beers++;
+  log({ name: name, action: "increment", extra: "big" });
 
   saveBeer();
 };
@@ -115,11 +141,11 @@ let increaseBeefJerky = (name: string) => {
   verifyConsumer(name);
 
   BeerData[name].beef_jerky++;
+  log({ name: name, action: "increment", extra: "jerky" });
 
   saveBeer();
 };
 
-// Increment the number of small beers consumed by a specific consumer
 let increaseToPay = (name: string, amount: number) => {
   verifyConsumer(name);
 
@@ -139,8 +165,6 @@ let saveBeer = () => {
     (err: NodeJS.ErrnoException | null) => {
       if (err) {
         console.error(`Error saving beer data to file: ${err.message}`);
-      } else {
-        console.log("Beer data saved to file.");
       }
     }
   );
