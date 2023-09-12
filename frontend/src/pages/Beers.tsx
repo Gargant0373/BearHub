@@ -147,9 +147,7 @@ function Beers() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12}>
-          <BeerData name={name} beerData={beerData} personData={personData} admin={admin} fetchData={fetchData} />
-        </Grid>
+        <BeerData name={name} beerData={beerData} personData={personData} admin={admin} fetchData={fetchData} />
         <Grid item xs={12}>
           <Divider />
         </Grid>
@@ -169,7 +167,7 @@ function BeerData(props: {
 }) {
   return (
     <>
-      <Grid item xs={12} md={8} display="flex" justifyContent="right" alignItems="right">
+      <Grid item xs={12} md={8} display="flex" justifyContent="center" alignItems="center">
         <TableContainer>
           <Typography variant="h5" fontSize="150%" textAlign="center" marginTop="15px">Your Consumption</Typography>
           <Divider />

@@ -15,10 +15,13 @@ function Meter(props: { beerData: Record<string, Beer> }) {
         fetchMeterData();
     }, [props.beerData]);
 
+    useEffect(() => {
+        setImagePath(getImagePath(meter));
+    }, [meter]);
+
     const fetchMeterData = async () => {
         try {
             setMeter(await getMeter());
-            setImagePath(getImagePath(meter));
         } catch (err) {
             console.log(err);
         }
@@ -32,11 +35,11 @@ function Meter(props: { beerData: Record<string, Beer> }) {
         <Grid container item xs={12} display="flex" textAlign="center" justifyContent="center">
             <Grid item xs={12}>
                 <Typography variant="h6" width="100%" textAlign="center">
-                    Today we drank {meter} liters of beer!
+                    Today we drank {meter.toFixed(2)} liters of beer!
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                {imagePath && <img src={imagePath} alt={`Meter Image for ${meter} liters of beer`} />}
+                {imagePath && <img src={imagePath} alt={`Meter Image for ${meter.toFixed(2)} liters of beer`} />}
             </Grid>
         </Grid>
     );
