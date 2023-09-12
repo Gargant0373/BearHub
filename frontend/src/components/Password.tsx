@@ -4,9 +4,6 @@ import { useLocation } from "react-router-dom";
 import { checkPassword } from "../api/ApiHandler";
 
 function PasswordField() {
-    const location = useLocation();
-    
-    const { name } = location.state as { name: string };
     const [password, setPassword] = useState('');
 
     return (
