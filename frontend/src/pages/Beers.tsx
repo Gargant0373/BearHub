@@ -10,7 +10,7 @@ function Beers() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const [logged, setLogged] = useState<boolean>(false);
+  const [logged, setLogged] = useState<string | null>(null);
 
   if (!location.state) {
     navigate("/");
@@ -28,8 +28,8 @@ function Beers() {
 
   const fetchData = async () => {
     try {
-      setBeerData(await getBeersData());
-      setPersonData(await getPersonsData());
+      setBeerData(await getBeersData(name, logged));
+      setPersonData(await getPersonsData(name, logged));
     } catch (error: any) {
       console.error(error.message);
     }
@@ -67,7 +67,7 @@ function Beers() {
             }} display="flex" alignItems="right">
               <Button type="submit" variant="contained" onClick={(event) => {
                 event.preventDefault();
-                navigate('/user', { state: { name } });
+                navigate('/user', { state: { name, logged } });
               }}>User</Button>
             </Grid>
           )}
@@ -147,7 +147,7 @@ function Beers() {
             </Grid>
           </Grid>
         </Grid>
-        <BeerData name={name} beerData={beerData} personData={personData} admin={admin} fetchData={fetchData} />
+        <BeerData name={name} beerData={beerData} personData={personData} admin={admin} fetchData={fetchData} logged={logged} />
         <Grid item xs={12}>
           <Divider />
         </Grid>
@@ -163,7 +163,8 @@ function BeerData(props: {
   name: string, beerData: Record<string, Beer>,
   personData: Record<string, Person>,
   admin: boolean,
-  fetchData: () => Promise<void>
+  fetchData: () => Promise<void>,
+  logged: string | null
 }) {
   return (
     <>

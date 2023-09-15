@@ -4,13 +4,17 @@ import { Grid, Table, TableCell, TableHead, TableRow, Tooltip, Typography } from
 import { useEffect, useState } from "react";
 import { getStatData } from "../api/ApiHandler";
 import { Stat } from "../api/DataTypes";
+import { useLocation } from 'react-router-dom';
 
 function Stats() {
+  const location = useLocation();
 
   const [statData, setStatData] = useState<Stat>({ small_beers: 0, big_beers: 0, beef_jerky: 0 });
   const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
 
+  const { name, logged } = location.state as { name: string, logged: string | null };
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -21,7 +25,7 @@ function Stats() {
 
   const fetchData = async () => {
     try {
-      setStatData(await getStatData(currentYear * 100 + currentMonth));
+      setStatData(await getStatData(currentYear * 100 + currentMonth, name, logged));
     } catch (error: any) {
       console.error(error.message);
     }

@@ -4,9 +4,9 @@ import { Beer, Person, Stat } from './DataTypes';
 const server_path = ""
 const api_path = "/api/v2"
 
-async function getPersonsData(): Promise<Record<string, Person>> {
+async function getPersonsData(handler: string, password: string | null): Promise<Record<string, Person>> {
     try {
-        const response = await axios.get(`${server_path}${api_path}/person`);
+        const response = await axios.get(`${server_path}${api_path}/person?handler=${handler}&password=${password}`);
         return response.data as Record<string, Person>;
     } catch (error: any) {
         console.error(error.message);
@@ -14,9 +14,9 @@ async function getPersonsData(): Promise<Record<string, Person>> {
     }
 }
 
-async function getBeersData(): Promise<Record<string, Beer>> {
+async function getBeersData(handler: string, password: string | null): Promise<Record<string, Beer>> {
     try {
-        const response = await axios.get(`${server_path}${api_path}/beer`);
+        const response = await axios.get(`${server_path}${api_path}/beer?handler=${handler}&password=${password}`);
         return response.data as Record<string, Beer>;
     } catch (error: any) {
         console.error(error.message);
@@ -58,9 +58,9 @@ async function checkPassword(name: string, password: string): Promise<boolean> {
     }
 }
 
-async function getStatData(key: number): Promise<Stat> {
+async function getStatData(key: number, handler: string, password: string | null): Promise<Stat> {
     try {
-        const response = await axios.get(`${server_path}${api_path}/stat/${key}`);
+        const response = await axios.get(`${server_path}${api_path}/stat/${key}?handler=${handler}&password=${password}`);
         return response.data as Stat;
     } catch (error: any) {
         console.error(error.message);

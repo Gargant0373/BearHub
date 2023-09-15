@@ -1,5 +1,6 @@
 import { Stat } from "../data_types";
 import { getConsumption } from "./meter";
+import { PersonData, hashPassword } from "./person";
 
 const fs = require("fs");
 
@@ -31,6 +32,14 @@ let loadStatData = () => {
 
 let getStats = (req: any, res: any) => {
   let key = req.params.key;
+
+  let handler = req.query.handler;
+  let password = req.query.password;
+
+  if (!PersonData[handler] || !PersonData[handler].admin || !PersonData[handler].password || PersonData[handler].password !== hashPassword(password)) {
+    res.json({ small_beers: -1, big_beers: -1, beef_jerky: -1 });
+    return;
+  }
 
   if (!StatData[key]) {
     let zeroData: Stat = {

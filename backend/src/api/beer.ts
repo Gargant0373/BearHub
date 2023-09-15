@@ -1,7 +1,7 @@
 import { Beer } from "../data_types";
 import { log } from "./log";
 import { incrementMeter } from "./meter";
-import { PersonData, createPerson } from "./person";
+import { PersonData, createPerson, hashPassword } from "./person";
 
 const fs = require("fs");
 
@@ -32,7 +32,29 @@ let loadBeerData = () => {
 };
 
 let getBeers = (req: any, res: any) => {
-  res.status(200).json(BeerData);
+  let handler = req.query.handler;
+  let password = req.query.password;
+
+  if (!PersonData[handler]) {
+    res.json({});
+    return;
+  }
+
+  if (password === null || password === undefined) {
+    let SoloPerson: Record<string, Beer> = {};
+    SoloPerson[handler] = BeerData[handler];
+    res.json(SoloPerson);
+    return;
+  }
+
+  if (PersonData[handler].password !== hashPassword(password)) {
+    let SoloPerson: Record<string, Beer> = {};
+    SoloPerson[handler] = BeerData[handler];
+    res.json(SoloPerson);
+    return;
+  }
+
+  res.json(PersonData);
 }
 
 let getBeer = (req: any, res: any) => {

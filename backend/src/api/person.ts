@@ -53,15 +53,6 @@ let hashPassword = (password: string): string => {
   return sha256.digest("hex");
 };
 
-let getPerson = (req: any, res: any) => {
-  const name = req.params.name;
-  if (!(name in PersonData)) {
-    res.status(404).send("Person not found");
-    return;
-  }
-  res.json(PersonData[name]);
-};
-
 let createPerson = (req: any, res: any) => {
   const name = req.params.name;
 
@@ -83,7 +74,38 @@ let createPerson = (req: any, res: any) => {
   res.status(201).send("Person created");
 };
 
+let getPerson = (req: any, res: any) => {
+  const name = req.params.name;
+  if (!(name in PersonData)) {
+    res.status(404).send("Person not found");
+    return;
+  }
+  res.json(PersonData[name]);
+};
+
 let getAllPeople = (req: any, res: any) => {
+  let handler = req.query.handler;
+  let password = req.query.password;
+
+  if (!PersonData[handler]) {
+    res.json({});
+    return;
+  }
+
+  if (password === null || password === undefined) {
+    let SoloPerson: Record<string, Person> = {};
+    SoloPerson[handler] = PersonData[handler];
+    res.json(SoloPerson);
+    return;
+  }
+
+  if (PersonData[handler].password !== hashPassword(password)) {
+    let SoloPerson: Record<string, Person> = {};
+    SoloPerson[handler] = PersonData[handler];
+    res.json(SoloPerson);
+    return;
+  }
+
   res.json(PersonData);
 };
 
@@ -235,4 +257,5 @@ export {
   setPassword,
   checkPassword,
   increment,
+  hashPassword,
 };

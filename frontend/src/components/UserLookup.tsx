@@ -2,19 +2,24 @@ import { Grid, Table, TableCell, TableHead, TableRow, TextField, Button, Typogra
 import { useEffect, useState } from "react";
 import { getPersonsData } from "../api/ApiHandler";
 import { Person } from "../api/DataTypes";
+import { useLocation } from "react-router-dom";
 
 function UserLookup() {
+    const location = useLocation();
+
     const [personData, setPersonData] = useState<Record<string, Person>>({});
     const [filter, setFilter] = useState<string>("");
     const [currentPage, setCurrentPage] = useState<number>(1);
     const itemsPerPage = 8;
+
+    const { name, logged } = location.state as { name: string, logged: string | null };
 
     useEffect(() => {
         fetchData();
     }, [currentPage]);
 
     let fetchData = async () => {
-        setPersonData(await getPersonsData());
+        setPersonData(await getPersonsData(name, logged));
     };
 
     let filteredKeys = Object.keys(personData).filter((k: string) =>

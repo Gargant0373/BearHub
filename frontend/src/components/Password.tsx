@@ -69,7 +69,7 @@ function Login(props: { setLogged: any }) {
                                 return;
                             }
 
-                            props.setLogged(true);
+                            props.setLogged(providedPassword);
                         }
                     } sx={{
                         marginTop: "10px",
