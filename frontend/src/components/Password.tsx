@@ -14,7 +14,7 @@ function PasswordField() {
 
     useEffect(() => {
         fetchData();
-    }, []);
+    }, [personData]);
 
     const fetchData = async () => {
         try {
