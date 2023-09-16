@@ -14,6 +14,16 @@ async function getPersonsData(handler: string, password: string | null): Promise
     }
 }
 
+async function getPersonData(name: string): Promise<Person> {
+    try {
+        const response = await axios.get(`${server_path}${api_path}/person/${name}`);
+        return response.data as Person;
+    } catch (error: any) {
+        console.error(error.message);
+        return {} as Person;
+    }
+}
+
 async function getBeersData(handler: string, password: string | null): Promise<Record<string, Beer>> {
     try {
         const response = await axios.get(`${server_path}${api_path}/beer?handler=${handler}&password=${password}`);
@@ -58,6 +68,14 @@ async function checkPassword(name: string, password: string): Promise<boolean> {
     }
 }
 
+async function setPassword(name: string, password: string, passwordOld: string) {
+    try {
+        await axios.post(`${server_path}${api_path}/person/${name}/password?password=${password}&passwordOld=${passwordOld}`);
+    } catch (error: any) {
+        console.error(error.message);
+    }
+}
+
 async function getStatData(key: number, handler: string, password: string | null): Promise<Stat> {
     try {
         const response = await axios.get(`${server_path}${api_path}/stat/${key}?handler=${handler}&password=${password}`);
@@ -78,4 +96,4 @@ async function getMeter(): Promise<number> {
     }
 }
 
-export { getPersonsData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword, getStatData, getMeter };
+export { getPersonsData, getPersonData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword, setPassword, getStatData, getMeter };

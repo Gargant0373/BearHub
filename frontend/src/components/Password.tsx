@@ -1,35 +1,78 @@
 import { Button, Divider, Grid, TextField, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { checkPassword } from "../api/ApiHandler";
+import { checkPassword, setPassword, getPersonData } from "../api/ApiHandler";
+import { Person } from "../api/DataTypes";
 
 function PasswordField() {
-    const [password, setPassword] = useState('');
+    const location = useLocation();
+    const { name } = location.state as { name: string };
+
+    const [passwordOld, setPasswordOld] = useState('');
+    const [password, setPass] = useState('');
+    const [personData, setPersonData] = useState<Person>();
+
+    useEffect(() => {
+        fetchData();
+    }, []);
+
+    const fetchData = async () => {
+        try {
+            setPersonData(await getPersonData(name));
+        } catch (error: any) {
+            console.error(error.message);
+        }
+    };
 
     return (
         <Grid container item xs={12} md={6}>
             <Grid item xs={2} md={3} />
             <Grid item xs={8} md={6}>
                 <Grid item xs={12}>
+                    {
+                        (personData?.password !== undefined && personData?.password !== null)
+                            ? (
+                                <><Grid item xs={12}>
+                                    <Typography variant="h6">Enter old password</Typography>
+                                </Grid><Grid item xs={12}>
+                                        <TextField
+                                            label="Password"
+                                            variant="outlined"
+                                            value={passwordOld}
+                                            onChange={(event) => setPasswordOld(event.target.value)}
+                                            fullWidth />
+                                    </Grid></>)
+                            : (<></>)
+                    }
                     <Grid item xs={12}>
-                        <Typography variant="h6">Set Password</Typography>
+                        <Typography variant="h6">Set new password</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                             label="Password"
                             variant="outlined"
                             value={password}
-                            onChange={(event) => setPassword(event.target.value)}
+                            onChange={(event) => setPass(event.target.value)}
                             fullWidth
                         />
                     </Grid>
                 </Grid>
                 <Grid marginTop="10px" item xs={12}>
                     <Button type="submit" variant="contained" onClick={
-                        (event) => {
-                            event.preventDefault();
+                        async () => {
+                            if (personData?.password !== undefined) {
+                                let valid: boolean = await checkPassword(name, passwordOld);
+                                if (!valid) {
+                                    alert('Invalid Password!');
+                                    setPasswordOld('');
+                                    return;
+                                }
+                            }
+                            setPassword(name, password, passwordOld);
+                            setPass('');
+                            setPasswordOld('');
                         }
-                    }>Set Password</Button>
+                    }>Set New Password</Button>
                 </Grid>
             </Grid>
             <Grid item xs={2} md={3} />
@@ -40,7 +83,7 @@ function PasswordField() {
 function Login(props: { setLogged: any }) {
     const location = useLocation();
     const { name } = location.state as { name: string };
-    
+
     const [providedPassword, setProvidedPassword] = useState('');
 
     return (
@@ -63,7 +106,7 @@ function Login(props: { setLogged: any }) {
                     <Button type="submit" variant="contained" onClick={
                         async () => {
                             let valid: boolean = await checkPassword(name, providedPassword);
-                            if(!valid) {
+                            if (!valid) {
                                 alert('Invalid Password!');
                                 setProvidedPassword('');
                                 return;
