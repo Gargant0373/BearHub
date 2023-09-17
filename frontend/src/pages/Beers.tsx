@@ -26,6 +26,10 @@ function Beers() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    fetchData();
+  }, [logged]);
+
   const fetchData = async () => {
     try {
       setBeerData(await getBeersData(name, logged));
