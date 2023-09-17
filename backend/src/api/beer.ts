@@ -35,7 +35,7 @@ let getBeers = (req: any, res: any) => {
   let handler = req.query.handler;
   let password = req.query.password;
 
-  if (!BeerData[handler]) {
+  if (!PersonData[handler]) {
     res.json({});
     return;
   }
