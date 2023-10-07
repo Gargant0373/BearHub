@@ -1,4 +1,5 @@
-import { Button, Divider, Grid, Typography, useMediaQuery, useTheme } from '@mui/material';
+import SettingsIcon from '@mui/icons-material/Settings';
+import { Button, Divider, Grid, Tooltip, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { PasswordField } from '../components/Password';
 import Stats from '../components/Stats';
@@ -20,7 +21,7 @@ function UserPage() {
 
     return (
         <Grid container spacing={2}>
-            <Grid item md={1} xs={12}>
+            <Grid item md={1} xs={6}>
                 <Button type="submit" variant="contained" onClick={(event) => {
                     event.preventDefault();
                     navigate('/beers', { state: { name } });
@@ -32,6 +33,14 @@ function UserPage() {
                 </Typography>
             </Grid>
             <Grid item md={1} xs={0} />
+            <Grid item md={1} xs={12} display="flex" alignContent="center" justifyContent="center">
+                <Tooltip title="Customize" placement="top">
+                    <SettingsIcon color='primary' onClick={(event) => {
+                        event.preventDefault();
+                        navigate('/customize', { state: { name } });
+                    }} />
+                </Tooltip>
+            </Grid>
 
             <Grid item xs={12}>
                 <Divider />

@@ -12,14 +12,9 @@ import {
   increaseToPay,
 } from "./beer";
 import { log } from "console";
+import { CustomizeData } from "./customize";
 
 const fs = require("fs");
-
-const prices = {
-  small: 5,
-  big: 8,
-  jerky: 15,
-};
 
 const filePath = "../data/person.json";
 let PersonData: Record<string, Person> = {};
@@ -208,19 +203,19 @@ let increment = (req: any, res: any) => {
   switch (type) {
     case "small":
       PersonData[name].small_beers++;
-      increaseToPay(name, prices.small);
+      increaseToPay(name, CustomizeData.prices.small);
       incrementSmallBeer();
       increaseSmallBeer(name);
       break;
     case "big":
       PersonData[name].big_beers++;
-      increaseToPay(name, prices.big);
+      increaseToPay(name, CustomizeData.prices.big);
       incrementBigBeer();
       increaseBigBeer(name);
       break;
     case "jerky":
       PersonData[name].beef_jerky++;
-      increaseToPay(name, prices.jerky);
+      increaseToPay(name, CustomizeData.prices.jerky);
       incrementBeefJerky();
       increaseBeefJerky(name);
       break;

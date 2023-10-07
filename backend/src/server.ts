@@ -9,6 +9,7 @@ import {
   increment,
 } from "./api/person";
 import { getStats, loadStatData, getMeter } from "./api/stat";
+import { getPrices, setPrices } from "./api/customize";
 
 // Initialize the app
 const express = require("express");
@@ -63,6 +64,12 @@ app.post(`${api_path}/beer/:name/pay`, payBeer);
 
 // Delete a person's consumption
 app.delete(`${api_path}/beer/:name`, deleteBeer);
+
+// Get all the prices
+app.get(`${api_path}/customize/prices`, getPrices);
+
+// Set the prices
+app.post(`${api_path}/customize/prices`, setPrices);
 
 // Initialize the app
 app.listen(port, () => {
