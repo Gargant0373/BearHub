@@ -17,30 +17,32 @@ function UserPage() {
         return null;
     }
 
-    const { name } = location.state as { name: string };
+    const { name, logged } = location.state as { name: string, logged: string | null };
 
     return (
-        <Grid container spacing={2}>
-            <Grid item md={1} xs={6}>
+        <Grid container spacing={0}>
+            <Grid item md={1} xs={4}>
                 <Button type="submit" variant="contained" onClick={(event) => {
                     event.preventDefault();
                     navigate('/beers', { state: { name } });
                 }}>Go Back</Button>
             </Grid>
-            <Grid item md={10} xs={12} display="flex" alignItems="center" justifyContent="center">
+            <Grid item md={1} xs={2} display="flex" alignContent="center" justifyContent="left">
+                <Tooltip title="Customize" placement="top" sx={{
+                    marginTop: "7px",
+                }}>
+                    <SettingsIcon color='primary' onClick={(event) => {
+                        event.preventDefault();
+                        navigate('/customize', { state: { name, logged } });
+                    }} />
+                </Tooltip>
+            </Grid>
+            <Grid item md={12} xs={12} display="flex" alignItems="center" justifyContent="center">
                 <Typography variant="h4" gutterBottom>
                     Welcome, {name}!
                 </Typography>
             </Grid>
             <Grid item md={1} xs={0} />
-            <Grid item md={1} xs={12} display="flex" alignContent="center" justifyContent="center">
-                <Tooltip title="Customize" placement="top">
-                    <SettingsIcon color='primary' onClick={(event) => {
-                        event.preventDefault();
-                        navigate('/customize', { state: { name } });
-                    }} />
-                </Tooltip>
-            </Grid>
 
             <Grid item xs={12}>
                 <Divider />

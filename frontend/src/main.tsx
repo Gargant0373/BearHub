@@ -7,6 +7,7 @@ import {
 import Beers from './pages/Beers';
 import Home from './pages/Home';
 import UserPage from './pages/UserPage';
+import Customize from './pages/Customize';
 
 const router = createBrowserRouter([
   {
@@ -18,6 +19,9 @@ const router = createBrowserRouter([
   }, {
     path: "/user",
     element: <UserPage />,
+  }, {
+    path: "/customize",
+    element: <Customize />,
   }
 ]);
 

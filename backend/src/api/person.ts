@@ -203,19 +203,19 @@ let increment = (req: any, res: any) => {
   switch (type) {
     case "small":
       PersonData[name].small_beers++;
-      increaseToPay(name, CustomizeData.prices.small);
+      increaseToPay(name, CustomizeData.prices.small_beer);
       incrementSmallBeer();
       increaseSmallBeer(name);
       break;
     case "big":
       PersonData[name].big_beers++;
-      increaseToPay(name, CustomizeData.prices.big);
+      increaseToPay(name, CustomizeData.prices.big_beer);
       incrementBigBeer();
       increaseBigBeer(name);
       break;
     case "jerky":
       PersonData[name].beef_jerky++;
-      increaseToPay(name, CustomizeData.prices.jerky);
+      increaseToPay(name, CustomizeData.prices.beef_jerky);
       incrementBeefJerky();
       increaseBeefJerky(name);
       break;

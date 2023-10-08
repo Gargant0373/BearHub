@@ -5,11 +5,11 @@ const fs = require("fs");
 const filePath = "../data/stat.json";
 
 let CustomizeData = {
-    prices: {
-        small: 5,
-        big: 8,
-        jerky: 15,
-    },
+  prices: {
+      small_beer: 5,
+      big_beer: 8,
+      beef_jerky: 15,
+  },
 }
 
 let loadStatData = () => {
@@ -49,18 +49,18 @@ let setPrices = (req: any, res: any) => {
         return;
     }
 
-    let small: number = req.query.small;
-    let big: number = req.query.big;
-    let jerky: number = req.query.jerky;
+    let small_beer: number = req.query.small_beer;
+    let big_beer: number = req.query.big_beer;
+    let beef_jerky: number = req.query.beef_jerky;
 
-    if(!small || !big || !jerky) {
+    if(!small_beer || !big_beer || !beef_jerky) {
         res.json({ small_beers: -1, big_beers: -1, beef_jerky: -1 });
         return;
     }
 
-    CustomizeData.prices.small = small;
-    CustomizeData.prices.big = big;
-    CustomizeData.prices.jerky = jerky;
+    CustomizeData.prices.small_beer = small_beer;
+    CustomizeData.prices.big_beer = big_beer;
+    CustomizeData.prices.beef_jerky = beef_jerky;
     res.json(CustomizeData.prices);
     return;
 }

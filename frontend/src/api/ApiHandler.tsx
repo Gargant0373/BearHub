@@ -96,4 +96,22 @@ async function getMeter(): Promise<number> {
     }
 }
 
-export { getPersonsData, getPersonData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword, setPassword, getStatData, getMeter };
+async function getProductPrices(): Promise<{small_beer: number, big_beer: number, beef_jerky: number}> {
+    try {
+        const response = await axios.get(`${server_path}${api_path}/customize/prices`);
+        return response.data as {small_beer: number, big_beer: number, beef_jerky: number};
+    } catch(error: any) {
+        console.error(error.message);
+        return {small_beer: -1, big_beer: -1, beef_jerky: -1};
+    }
+}
+
+async function setProductPrices(password: string | null, prices: { small_beer: number, big_beer: number, beef_jerky: number }) {
+    try {
+        await axios.post(`${server_path}${api_path}/customize/prices?password=${password}&small_beer=${prices.small_beer}&big_beer=${prices.big_beer}&beef_jerky=${prices.beef_jerky}`);
+    } catch(error: any) {
+        console.error(error.message);
+    }
+}
+
+export { getPersonsData, getPersonData, getBeersData, incrementBeerData, payBeerData, deleteBeerData, checkPassword, setPassword, getStatData, getMeter, getProductPrices as getPrices, setProductPrices as setPrices };
